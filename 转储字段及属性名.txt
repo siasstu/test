@@ -1,0 +1,14 @@
+SELECT
+    COLUMN_NAME 字段,
+--     COLUMN_TYPE 类型,
+    DATA_TYPE 类型,
+		CHARACTER_MAXIMUM_LENGTH 长度,
+		column_key  主键,
+    IS_NULLABLE  是否为空,
+-- 		COLUMN_DEFAULT 默认值,
+    COLUMN_COMMENT 备注 
+FROM
+    INFORMATION_SCHEMA.COLUMNS 
+WHERE
+    table_schema = 'library' 
+    AND table_name = 'returnbook'
