@@ -1,0 +1,110 @@
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.*;
+
+/**
+ * @author 吴文杰
+ * @version 1.0
+ * @createTime 2023-03-14 09:33:17
+ */
+public class TestDemo {
+  public static void output(String candidate, String number) {
+    Map<String, String> map01 = new HashMap<String, String>();
+    map01.put("A", "JAVA2 EE");
+    map01.put("B", "JAVA2 Card");
+    map01.put("C", "JAVA2 ME");
+    map01.put("D", "JAVA2 HE");
+    map01.put("E", "JAVA2 SE");
+    Map<String, String> map02 = new HashMap<String, String>();
+    map02.put("A", "JAVA程序的main⽅法必须写在类⾥⾯");
+    map02.put("B", "JAVA程序中可以有多个main⽅法");
+    map02.put("C", "JAVA程序中类名必须与⽂件名⼀样");
+    map02.put("D", "JAVA程序的main⽅法中如果只有⼀条语句，可以不⽤{}(⼤括号)括起来");
+    Map<String, String> map03 = new HashMap<String, String>();
+    map03.put("A", "变量由字母、下划线、数字、$符号随意组成；");
+    map03.put("B", "变量不能以数字作为开头；");
+    map03.put("C", "A和a在java中是同⼀个变量；");
+    map03.put("D", "不同类型的变量，可以起相同的名字；");
+    Map<String, String> map04 = new HashMap<String, String>();
+    map04.put("A", "STRING");
+    map04.put("B", "x3x;");
+    map04.put("C", "void");
+    map04.put("D", "de$f");
+    Map<String, String> map05 = new HashMap<String, String>();
+    map05.put("A", "31");
+    map05.put("B", "0");
+    map05.put("C", "1");
+    map05.put("D", "2");
+    ArrayList<ChoiceQuestion> choiceQuestionList = new ArrayList<ChoiceQuestion>();
+    choiceQuestionList.add(new ChoiceQuestion("JAVA所定义的版本中不包括", map01, "D"));
+    choiceQuestionList.add(new ChoiceQuestion("下列说法正确的是", map02, "A"));
+    choiceQuestionList.add(new ChoiceQuestion("以下()不是合法的标识符", map04, "C"));
+    choiceQuestionList.add(new ChoiceQuestion("表达式(11+3*8)/4%3的值是", map05, "D"));
+    choiceQuestionList.add(new ChoiceQuestion("变量命名规范说法正确的是", map03, "B")); // 题⽬顺序打乱
+    Collections.shuffle(choiceQuestionList);
+    // 选项-答案乱序
+    for (ChoiceQuestion question : choiceQuestionList) {
+      Topic random = random(question.getOption(), question.getKey());
+      question.setOption(random.getOption());
+      question.setKey(random.getKey());
+    }
+    System.out.println(toString(choiceQuestionList, candidate, number));
+  }
+  public static Topic random(Map<String, String> option, String key) {
+    Set<String> keySet = option.keySet();
+    ArrayList<String> keyList = new ArrayList<>(keySet);
+    Collections.shuffle(keyList);
+    HashMap<String, String> optionNew = new HashMap<>();
+    int idx = 0;
+    String keyNew = "";
+    for (String next : keySet) {
+      String randomKey = keyList.get(idx++);
+      if (key.equals(next)) {
+        keyNew = randomKey;
+      }
+      optionNew.put(randomKey, option.get(next));
+    }
+    return new Topic(optionNew, keyNew);
+  }
+  public static String toString(ArrayList<ChoiceQuestion> choiceQuestionList, String candidate, String number) {
+    StringBuilder detail = new StringBuilder("考⽣：" + candidate + "\r\n" +
+            "考号：" + number + "\r\n" +
+            "--------------------------------------------\r\n" +
+            "⼀、选择题" + "\r\n\n");
+    for (int idx = 0; idx < choiceQuestionList.size(); idx++) {
+      detail.append("第").append(idx + 1).append("题：").append(choiceQuestionList.get(idx).getName()).append("\r\n");
+      Map<String, String> option = choiceQuestionList.get(idx).getOption();
+      for (String key : option.keySet()) {
+        detail.append(key).append("：").append(option.get(key)).append("\r\n");
+      }
+      detail.append("答案：").append(choiceQuestionList.get(idx).getKey()).append("\r\n\n");
+    }
+    return detail.toString();
+  }
+  public static void main(String[] args) {
+    output("花花", "1000001921032");
+    output("⾖⾖", "1000001921051");
+    output("⼤宝", "1000001921987");
+  }
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class ChoiceQuestion {
+  private String name; // 题⽬
+  private Map<String, String> option; // 选项；A、B、C、D
+  private String key; // 答案；B
+}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class Topic {
+  private Map<String, String> option; // 选项；A、B、C、D
+  private String key; // 答案；B
+}
+
+
+
